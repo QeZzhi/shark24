@@ -1,6 +1,6 @@
-<div align="center">
-  <img src="banner.svg" alt="shark24 Banner" width="100%">
-</div>
+<p align="center">
+  <img src="https://www.gitskins.com/api/section/wordmark?username=QeZzhi&theme=aurora&label=Shark24%20Torvalds&v=1" width="100%" alt="Shark24 Wordmark" />
+</p>
 
 # shark24 🦈
 
