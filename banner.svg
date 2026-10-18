@@ -1,35 +1,3 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="200" viewBox="0 0 800 200">
-  <defs>
-    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0d1117"/>
-      <stop offset="100%" stop-color="#161b22"/>
-    </linearGradient>
-  </defs>
-
-  <rect width="800" height="200" fill="url(#bgGrad)" rx="10" stroke="#30363d" stroke-width="2"/>
-  
-  <!-- Кнопки терминала -->
-  <circle cx="25" cy="25" r="6" fill="#ff5f56"/>
-  <circle cx="45" cy="25" r="6" fill="#ffbd2e"/>
-  <circle cx="65" cy="25" r="6" fill="#27c93f"/>
-
-  <!-- Шапка -->
-  <text x="90" y="30" font-family="monospace" font-size="12" fill="#8b949e">qezzhi@macbook ~ % shark24</text>
-
-  <!-- Главный текст (Акула) -->
-  <text x="400" y="110" font-family="monospace" font-size="64" font-weight="bold" fill="#58a6ff" text-anchor="middle" letter-spacing="4" filter="drop-shadow(0 0 5px #58a6ff)">
-    shark24
-  </text>
-  
-  <!-- Подзаголовок -->
-  <text x="400" y="145" font-family="monospace" font-size="16" fill="#3fb950" text-anchor="middle" letter-spacing="2">
-    FAST CODE SEARCH ENGINE
-  </text>
-
-  <!-- Мигающий курсор (CSS) -->
-  <style>
-    .cursor { animation: blink 1s step-end infinite; }
-    @keyframes blink { 50% { opacity: 0; } }
-  </style>
-  <rect x="400" y="165" width="10" height="15" fill="#3fb950" class="cursor" />
-</svg>
+<p align="center">
+  <img src="https://www.gitskins.com/api/section/wordmark?username=QeZzhi&theme=aurora&label=Shark24%20Torvalds" width="100%" alt="3D ASCII wordmark for Linus Torvalds" />
+</p>
