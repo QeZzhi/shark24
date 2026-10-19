@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -O2 -Iinclude
+CFLAGS = -Wall -Wextra -O3 -march=native -flto -Iinclude
 TARGET = shark24
 OBJS = src/main.o src/walker.o src/search.o
 
