@@ -1,38 +1,35 @@
-#include <stdio.h>      // Подключаем стандартную библиотеку ввода/вывода (для printf)
-#include "walker.h"     // Подключаем наш заголовочный файл с объявлением функции walk_directory
+#include <stdio.h>
+#include <string.h>
+#include "walker.h"
 
 int main(int argc, char *argv[]) {
-    // argc (argument count) — количество аргументов, переданных программе.
-    // argv (argument vector) — массив строк (указателей на символы), где хранятся сами аргументы.
-    
-    // Если аргументов меньше 3 (имя программы + ключевое слово + папка), 
-    // значит, пользователь ввел команду неправильно.
     if (argc < 3) {
-        // Выводим инструкцию по использованию (argv[0] — это имя самой программы, например ./shark24)
-        printf("Usage: %s <keyword> <directory>\n", argv[0]);
-        printf("Example: %s main src/\n", argv[0]);
-        return 1; // Возвращаем 1, чтобы сообщить системе, что программа завершилась с ошибкой
+        printf("Usage: %s [-i] <keyword> <directory>\n", argv[0]);
+        return 1;
     }
     
-    // Если аргументов достаточно, сохраняем их в переменные для удобства.
-    // argv[1] — это первое слово после имени программы (то, что мы ищем).
-    const char *keyword = argv[1];
+    int ignore_case = 0;
+    const char *keyword = NULL;   // Объявляем здесь, чтобы было видно везде
+    const char *directory = NULL; // Объявляем здесь
+
+    // Проверяем, есть ли флаг -i
+    if (strcmp(argv[1], "-i") == 0) {
+        if (argc < 4) { // Если есть -i, но нет слова или папки
+            printf("Usage: %s -i <keyword> <directory>\n", argv[0]);
+            return 1;
+        }
+        ignore_case = 1;
+        keyword = argv[2];   // Присваиваем значение
+        directory = argv[3];
+    } else {
+        keyword = argv[1];   // Присваиваем значение
+        directory = argv[2];
+    }
     
-    // argv[2] — это второе слово после имени программы (путь к папке, где ищем).
-    const char *directory = argv[2];
+    printf("\033[1;34m[shark24] Hunting for \"%s\" in %s%s...\033[0m\n\n", keyword, directory, ignore_case ? " (ignore case)" : "");
     
-    // Выводим красивое сообщение о начале поиска. 
-    // \033[1;34m — ANSI-код для включения синего цвета, \033[0m — сброс цвета.
-    printf("\033[1;34m[shark24] Hunting for \"%s\" in %s...\033[0m\n\n", keyword, directory);
+    walk_directory(directory, keyword, ignore_case);
     
-    // Вызываем главную функцию поиска, передавая ей папку и ключевое слово.
-    // Она рекурсивно обойдет все файлы и выведет найденные строки.
-    walk_directory(directory, keyword);
-    
-    // Выводим сообщение об окончании работы. 
-    // В конце добавляем смайлик акулы 🦈.
     printf("\n\033[1;34m[shark24] Hunt complete. 🦈\033[0m\n");
-    
-    // Возвращаем 0, чтобы сообщить системе, что программа завершилась успешно.
     return 0;
 }

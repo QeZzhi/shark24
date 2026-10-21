@@ -14,8 +14,7 @@ extern "C" {
 // Мы не пишем тело функции (что именно она делает). 
 // Мы просто говорим компилятору: "Где-то в проекте есть функция walk_directory, 
 // которая принимает два указателя на строки (dirpath и keyword) и ничего не возвращает (void)".
-void walk_directory(const char *dirpath, const char *keyword);
-
+void walk_directory(const char *dirpath, const char *keyword, int ignore_case);
 #ifdef __cplusplus
 }
 #endif

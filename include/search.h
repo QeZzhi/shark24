@@ -11,7 +11,7 @@ extern "C" {
 // Объявление функции поиска в файле.
 // Говорим компилятору: "Где-то в search.c есть функция search_in_file, 
 // которая берет путь к файлу и ключевое слово, и ничего не возвращает (void)".
-void search_in_file(const char *filepath, const char *keyword);
+void search_in_file(const char *filepath, const char *keyword, int ignore_case);
 
 #ifdef __cplusplus
 }
