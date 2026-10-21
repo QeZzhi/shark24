@@ -1,27 +1,39 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "search.h"
+#include <stdio.h>   // Для работы с файлами (fopen, fread, fclose) и вывода (printf)
+#include <stdlib.h>  // Для работы с памятью (malloc, free)
+#include <string.h>  // Для работы со строками (strstr)
+#include "search.h"  // Наш заголовочный файл
 
 void search_in_file(const char *filepath, const char *keyword) {
+    // Открываем файл в бинарном режиме "rb" (read binary). 
+    // Это быстрее, чем текстовый режим, и позволяет читать любые файлы.
     FILE *file = fopen(filepath, "rb");
-    if (!file) return;
+    if (!file) return; // Если файл не открылся (нет прав или он занят), просто выходим.
     
-    fseek(file, 0, SEEK_END);
-    long file_size = ftell(file);
-    fseek(file, 0, SEEK_SET);
+    // Определяем размер файла.
+    fseek(file, 0, SEEK_END); // Перемещаем указатель в конец файла.
+    long file_size = ftell(file); // Узнаем текущую позицию (это и есть размер в байтах).
+    fseek(file, 0, SEEK_SET); // Возвращаем указатель в начало файла.
     
+    // Защита от пустых файлов и гигантских бинарников (больше 50 МБ).
+    // Если файл больше 50 МБ, мы его пропускаем, чтобы не забить всю оперативку.
     if (file_size <= 0 || file_size > 50 * 1024 * 1024) {
         fclose(file);
         return;
     }
     
+    // Выделяем память под весь файл. 
+    // file_size + 1 нужен для нулевого символа '\0', который обозначает конец строки в C.
     char *buffer = (char*)malloc(file_size + 1);
-    if (!buffer) { fclose(file); return; }
+    if (!buffer) { fclose(file); return; } // Если память не выделилась — выходим.
     
+    // Читаем весь файл за один раз в наш буфер.
+    // fread возвращает количество реально прочитанных байт.
     size_t read_bytes = fread(buffer, 1, file_size, file);
-    buffer[read_bytes] = '\0';
+    buffer[read_bytes] = '\0'; // Вручную ставим конец строки, чтобы strstr работал корректно.
     
+    // Проверка на бинарный файл.
+    // Бинарники (картинки, скомпилированные .o) часто содержат нулевые байты ('\0').
+    // Мы проверяем первые 1024 байта. Если находим '\0', значит, это не текст, и мы пропускаем его.
     for (size_t i = 0; i < read_bytes && i < 1024; i++) {
         if (buffer[i] == '\0') {
             free(buffer);
@@ -30,23 +42,41 @@ void search_in_file(const char *filepath, const char *keyword) {
         }
     }
     
+    // Указатель для поиска. Начинаем с начала буфера.
     char *found = buffer;
     
+    // Главный цикл поиска. 
+    // strstr ищет подстроку keyword в строке found. 
+    // Если находит — возвращает указатель на начало найденной подстроки. 
+    // Если нет — возвращает NULL, и цикл прерывается.
     while ((found = strstr(found, keyword)) != NULL) {
+        // Нам нужно вывести не просто слово, а всю строку, где оно находится.
+        
+        // Ищем начало строки: идем назад от найденного слова, пока не упремся в '\n' или в начало буфера.
         char *line_start = found;
         while (line_start > buffer && *(line_start - 1) != '\n') line_start--;
         
+        // Ищем конец строки: идем вперед, пока не упремся в '\n' или в конец буфера '\0'.
         char *line_end = found;
         while (*line_end != '\0' && *line_end != '\n') line_end++;
         
-        char old_char = *line_end;
+        // Временная обрезка строки.
+        // Мы временно ставим '\0' вместо '\n', чтобы printf вывел только эту строку и не захватил следующие.
+        char old_char = *line_end; 
         *line_end = '\0';
+        
+        // Выводим результат. Зеленым цветом (033[1;32m) выводим путь к файлу.
         printf("\033[1;32m%s:\033[0m %s\n", filepath, line_start);
+        
+        // Возвращаем символ '\n' на место, чтобы не сломать буфер для дальнейшего поиска.
         *line_end = old_char;
         
+        // Сдвигаем указатель на один символ вперед, чтобы искать следующее вхождение keyword.
+        // Если этого не сделать, strstr найдет то же самое слово снова, и мы зациклимся.
         found++;
     }
     
+    // Освобождаем память и закрываем файл. Это обязательно, иначе будут утечки памяти.
     free(buffer);
     fclose(file);
 }
