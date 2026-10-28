@@ -3,7 +3,7 @@
 #include <string.h>
 #include "search.h"
 
-void search_in_file(const char *filepath, const char *keyword, int ignore_case) {
+void search_in_file(const char *filepath, const char *keyword, int ignore_case, int show_line_numbers) {
     FILE *file = fopen(filepath, "rb");
     if (!file) return;
 
@@ -31,15 +31,22 @@ void search_in_file(const char *filepath, const char *keyword, int ignore_case) 
     }
 
     char *found = buffer;
-    
+    char *current_pos = buffer;
+    int line_number = 1;
+
     while (1) {
         if (ignore_case) {
-            found = strcasestr(found, keyword);
+            found = strcasestr(current_pos, keyword); 
         } else {
-            found = strstr(found, keyword);
+            found = strstr(current_pos, keyword);
         }
 
         if (found == NULL) break;
+
+        // Считаем строки от текущей позиции до найденного слова
+        for (char *p = current_pos; p < found; p++) {
+            if (*p == '\n') line_number++;
+        }
 
         char *line_start = found;
         while (line_start > buffer && *(line_start - 1) != '\n') line_start--;
@@ -49,10 +56,16 @@ void search_in_file(const char *filepath, const char *keyword, int ignore_case) 
         
         char old_char = *line_end;
         *line_end = '\0';
-        printf("\033[1;32m%s:\033[0m %s\n", filepath, line_start);
+
+        // ВЫВОД: если show_line_numbers == 1, печатаем номер строки
+        if (show_line_numbers) {
+            printf("\033[1;32m%s:%d:\033[0m %s\n", filepath, line_number, line_start);
+        } else {
+            printf("\033[1;32m%s:\033[0m %s\n", filepath, line_start);
+        }
+
         *line_end = old_char;
-        
-        found++;
+        current_pos = found + 1;
     }
 
     free(buffer);
