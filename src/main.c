@@ -8,6 +8,7 @@ int main(int argc, char *argv[]) {
     // 1. Проверка на флаг --version
     if (argc >= 2 && (strcmp(argv[1], "--version") == 0 || strcmp(argv[1], "-v") == 0)) {
         printf("shark24 version %s\n", SHARK_VERSION);
+        printf("A fast and minimalist code search tool 🦈\n");
         return 0;
     }
 
