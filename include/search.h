@@ -1,20 +1,12 @@
+// ============================================================
+// search.h — заголовок поиска в файле
+// search.h — file search header
+// ============================================================
+
 #ifndef SEARCH_H
 #define SEARCH_H
 
-// Защита от повторного включения (Header Guard).
-// Если файл подключится дважды, компилятор не будет ругаться.
+// Функция поиска | Search function
+void search_in_file(const char *filepath, const char *keyword, int ignore_case, int show_line_numbers, int only_files);
 
-#ifdef __cplusplus
-extern "C" {
 #endif
-
-// Объявление функции поиска в файле.
-// Говорим компилятору: "Где-то в search.c есть функция search_in_file, 
-// которая берет путь к файлу и ключевое слово, и ничего не возвращает (void)".
-void search_in_file(const char *filepath, const char *keyword, int ignore_case);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif // SEARCH_H
