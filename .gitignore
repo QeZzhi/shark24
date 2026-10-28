@@ -1,5 +1,5 @@
 # Скомпилированные файлы | Compiled Files
 *.o
-./DS_Store
+.DS_Store
 # Бинарник shark24 | shark24 binary
 shark24
