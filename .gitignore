@@ -1,5 +1,13 @@
-# Скомпилированные файлы | Compiled Files
+# ============================================================
+# .gitignore — файлы и папки, которые Git должен игнорировать
+# .gitignore — files and folders that Git should ignore
+# ============================================================
+
+# Скомпилированные объектные файлы | Compiled object files
 *.o
+
+# Файлы системы macOS | macOS system files
 .DS_Store
+
 # Бинарник shark24 | shark24 binary
 shark24
