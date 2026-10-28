@@ -3,7 +3,7 @@
 #include <string.h>
 #include "search.h"
 
-void search_in_file(const char *filepath, const char *keyword) {
+void search_in_file(const char *filepath, const char *keyword, int ignore_case) {
     FILE *file = fopen(filepath, "rb");
     if (!file) return;
 
@@ -32,7 +32,15 @@ void search_in_file(const char *filepath, const char *keyword) {
 
     char *found = buffer;
     
-    while ((found = strstr(found, keyword)) != NULL) {
+    while (1) {
+        if (ignore_case) {
+            found = strcasestr(found, keyword);
+        } else {
+            found = strstr(found, keyword);
+        }
+
+        if (found == NULL) break;
+
         char *line_start = found;
         while (line_start > buffer && *(line_start - 1) != '\n') line_start--;
         
