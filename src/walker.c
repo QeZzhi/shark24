@@ -6,7 +6,7 @@
 #include "walker.h"
 #include "search.h"
 
-void walk_directory(const char *dirpath, const char *keyword, int ignore_case, int show_line_numbers, const char *exclude_dir) {
+void walk_directory(const char *dirpath, const char *keyword, int ignore_case, int show_line_numbers, int only_files, const char *exclude_dir) {
     DIR *dir = opendir(dirpath);
     if (!dir) return;
 
@@ -27,11 +27,11 @@ void walk_directory(const char *dirpath, const char *keyword, int ignore_case, i
         if (stat(path, &statbuf) == -1) continue;
 
         if (S_ISDIR(statbuf.st_mode)) {
-            // Передаем show_line_numbers
-            walk_directory(path, keyword, ignore_case, show_line_numbers, exclude_dir);
+            // Передаем only_files
+            walk_directory(path, keyword, ignore_case, show_line_numbers, only_files, exclude_dir);
         } else if (S_ISREG(statbuf.st_mode)) {
-            // Передаем show_line_numbers
-            search_in_file(path, keyword, ignore_case, show_line_numbers);
+            // Передаем only_files
+            search_in_file(path, keyword, ignore_case, show_line_numbers, only_files);
         }
     }
     closedir(dir);
