@@ -7,7 +7,7 @@
 #include <string.h>     // Для strcmp, strstr | For strcmp, strstr
 #include "walker.h"     // Для walk_directory | For walk_directory
 
-#define SHARK_VERSION "BETA 0.1" // Версия программы | Program version
+#define SHARK_VERSION "v1.0.0" // Версия программы | Program version
 
 int main(int argc, char *argv[]) {
     // Если запросили версию | If version requested
