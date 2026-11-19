@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2026 Emir (QeZzhi) - Qez Project
+ * File: search.h
+ * Created: 2026-11-19 15:32
+ */
+
 // ============================================================
 // search.h — заголовок поиска в файле
 // search.h — file search header

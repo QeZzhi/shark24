@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2026 Emir (QeZzhi) - Qez Project
+ * File: walker.c
+ * Created: 2026-11-19 15:32
+ */
+
 // ============================================================
 // walker.c — реализация обхода директорий
 // walker.c — directory walking implementation

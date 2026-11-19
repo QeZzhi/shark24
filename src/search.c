@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2026 Emir (QeZzhi) - Qez Project
+ * File: search.c
+ * Created: 2026-11-19 15:32
+ */
+
 // ============================================================
 // search.c — реализация поиска строк в файле
 // search.c — implementation of string search in file

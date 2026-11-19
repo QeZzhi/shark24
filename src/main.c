@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2026 Emir (QeZzhi) - Qez Project
+ * File: main.c
+ * Created: 2026-11-19 15:32
+ */
+
 // ============================================================
 // main.c — точка входа в программу shark24
 // main.c — entry point of shark24
