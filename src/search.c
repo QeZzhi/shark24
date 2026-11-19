@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2026 Emir (QeZzhi) - Qez Project
  * File: search.c
- * Created: 2026-11-19 15:32
+ * Created: 2026-11-19 22:20
  */
 
 // ============================================================
@@ -16,7 +16,7 @@
 #include <string.h>     // Для strstr, strcasestr | For strstr, strcasestr
 #include "../inc/search.h"     // Свой заголовок | Own header
 
-void search_in_file(const char *filepath, const char *keyword, int ignore_case, int show_line_numbers, int only_files) {
+void search_in_file(const char *filepath, const char *keyword, int ignore_case, int show_line_numbers, int only_files, int count_only) {
     FILE *file = NULL;
     char *buffer = NULL;
 
@@ -48,6 +48,32 @@ void search_in_file(const char *filepath, const char *keyword, int ignore_case, 
         }
     }
     
+    // === РЕЖИМ ПОДСЧЁТА (-c): печатаем только количество вхождений ===
+    // === COUNT MODE (-c): print only the number of occurrences ===
+    if (count_only) {
+        char *cursor = buffer;  // Текущая позиция поиска | Current search position
+        int count = 0;          // Счётчик вхождений | Occurrence counter
+        
+        while (1) {
+            if (ignore_case) {
+                cursor = strcasestr(cursor, keyword); // Без учета регистра | Case-insensitive
+            } else {
+                cursor = strstr(cursor, keyword);     // С учетом регистра | Case-sensitive
+            }
+            
+            if (cursor == NULL) break; // Больше нет совпадений | No more matches
+            
+            count++;   // Нашли ещё одно вхождение | Found one more occurrence
+            cursor++;  // Сдвигаемся, чтобы искать дальше | Move forward to keep searching
+        }
+        
+        if (count > 0) { // Печатаем только файлы с совпадениями | Print only files with matches
+            printf("\033[1;32m%s\033[0m: %d\n", filepath, count); // Имя файла и счёт | Filename and count
+        }
+        
+        goto cleanup; // Режим -c обработан — на выход | Count mode handled — go to cleanup
+    }
+    
     char *found = buffer;       // Указатель на найденное слово | Pointer to found word
     int file_printed = 0;       // Флаг для -l (напечатали ли файл) | Flag for -l (file printed)
     
@@ -62,8 +88,8 @@ void search_in_file(const char *filepath, const char *keyword, int ignore_case, 
         
         if (found == NULL) break; // Если не нашли — выходим из цикла | If not found — break
         
-        // === ИСПРАВЛЕНИЕ: Считаем строки ОТ НАЧАЛА ФАЙЛА до found ===
-        // === FIX: Count lines FROM START OF FILE to found ===
+        // === Считаем строки ОТ НАЧАЛА ФАЙЛА до found ===
+        // === Count lines FROM START OF FILE to found ===
         int line_number = 1;
         for (char *p = buffer; p < found; p++) {
             if (*p == '\n') line_number++; // Каждый перенос строки +1 | Each newline +1
