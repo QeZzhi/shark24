@@ -5,9 +5,9 @@
 
 #include <stdio.h>      // Для printf | For printf
 #include <string.h>     // Для strcmp, strstr | For strcmp, strstr
-#include "walker.h"     // Для walk_directory | For walk_directory
+#include "../inc/walker.h"     // Для walk_directory | For walk_directory
 
-#define SHARK_VERSION "BETA 0.1" // Версия программы | Program version
+#define SHARK_VERSION "v1.0.1" // Версия программы | Program version
 
 int main(int argc, char *argv[]) {
     // Если запросили версию | If version requested
@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
                 printf("Error: -e requires a directory name.\n"); // Ошибка | Error
                 return 1;                        // Выход с ошибкой | Exit with error
             }
-        } else {
+        } else if (argv[i][0] != '-') { // Если аргумент не начинается с дефиса (не флаг) | If argument does not start with hyphen (not a flag)
             if (keyword == NULL) keyword = argv[i];          // Первое слово — ключ | First word is keyword
             else if (directory == NULL) directory = argv[i]; // Второе слово — папка | Second word is directory
         }
